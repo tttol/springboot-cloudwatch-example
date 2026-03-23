@@ -1,0 +1,18 @@
+version: 0.2
+
+env:
+  variables:
+    CONTAINER_NAME: "springboot-cloudwatch-example"
+
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+      - IMAGE_URI=$ECR_REGISTRY/$ECR_REPOSITORY:latest
+  build:
+    commands:
+      - printf '[{"name":"%s","imageUri":"%s"}]' "$CONTAINER_NAME" "$IMAGE_URI" > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
