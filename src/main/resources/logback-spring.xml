@@ -24,7 +24,7 @@
         </appender>
     </springProfile>
 
-    <root level="INFO">
+    <root>
         <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
