@@ -1,6 +1,7 @@
 <configuration>
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
 
+    <!-- Use text log when local -->
     <springProfile name="local">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
@@ -9,10 +10,15 @@
         </appender>
     </springProfile>
 
+    <!-- Use JSON-strucured log when not local -->
     <springProfile name="!local">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <!-- Use JSON log -->
             <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <fieldNames>
+                    <timestamp>timestamp</timestamp>
+                    <version>[ignore]</version>
+                </fieldNames>
                 <customFields>{"application":"${springAppName}"}</customFields>
             </encoder>
         </appender>
